@@ -1,4 +1,5 @@
-use blake3::hash;
+//! Reference: <<A Graduate Course in Applied Cryptography>> 14.1 Basic Lamport signatures
+
 use rand::Rng;
 
 struct SecretKey {
