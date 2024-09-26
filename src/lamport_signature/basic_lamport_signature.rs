@@ -3,8 +3,6 @@ use crate::utils::bytes_to_bits;
 use rand::Rng;
 use std::marker::PhantomData;
 
-mod one_bit_lamport;
-
 struct SecretKey {
     x0: Vec<u32>,
     x1: Vec<u32>,
@@ -26,6 +24,7 @@ impl<T: TranscriptHash> BasicLamportSignature<T> {
     // sk := (x0, x1)
     // pk := (H(x0), H(x1))
     pub fn gen<R: Rng>(rng: &mut R, bit_num: usize) -> (SecretKey, PublicKey) {
+        // TODO: Shrinking the secret-key.
         // sk := (x0, x1)
         let x0 = (0..bit_num)
             .into_iter()
@@ -44,7 +43,7 @@ impl<T: TranscriptHash> BasicLamportSignature<T> {
     }
 
     // sign a v-bit message
-
+    // TODO: Shrinking the signature using an enhanced TCR
     pub fn sign(sk: &SecretKey, msg: &[u8]) -> Vec<u32> {
         assert!(
             sk.x0.len() >= msg.len() * 8,
@@ -89,7 +88,7 @@ impl<T: TranscriptHash> BasicLamportSignature<T> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::transcript::Blake3TranscriptHash;
+    use crate::transcript::{Blake3TranscriptHash, Keccak256TranscriptHash};
     use rand::{RngCore, SeedableRng};
     use rand_chacha::ChaCha20Rng;
 
@@ -103,7 +102,14 @@ mod test {
         let sig = BasicLamportSignature::<Blake3TranscriptHash>::sign(&sk, msg);
         assert!(
             BasicLamportSignature::<Blake3TranscriptHash>::verify(&pk, msg, sig),
-            "OneBitLamportSignature verify failed when m=1"
+            "BasicLamportSignature::<Blake3TranscriptHash> verify failed when m=1"
+        );
+
+        let (sk, pk) = BasicLamportSignature::<Keccak256TranscriptHash>::gen(&mut prng, msg_len);
+        let sig = BasicLamportSignature::<Keccak256TranscriptHash>::sign(&sk, msg);
+        assert!(
+            BasicLamportSignature::<Keccak256TranscriptHash>::verify(&pk, msg, sig),
+            "BasicLamportSignature::<Blake3TranscriptHash> verify failed when m=1"
         );
     }
 }

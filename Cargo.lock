@@ -21,6 +21,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c4b4d0bd25bd0b74681c0ad21497610ce1b7c91b1022cd21c80c6fbdd9476b0"
 
 [[package]]
+name = "bit"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2b645c5c09a7d4035949cfce1a915785aaad6f17800c35fda8a8c311c491f284"
+
+[[package]]
 name = "blake3"
 version = "1.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -81,6 +87,7 @@ dependencies = [
 name = "lamport-signature-rs"
 version = "0.1.0"
 dependencies = [
+ "bit",
  "blake3",
  "num-bigint",
  "num-traits",
