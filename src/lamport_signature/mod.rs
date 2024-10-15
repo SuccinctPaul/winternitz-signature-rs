@@ -39,7 +39,7 @@ impl<T: TranscriptHash> LamportSignatureFramework<T> {
     // The public-key consists of the n hashes yi := f(xi) for i = 1, . . . , n.
     pub fn gen<R: Rng>(rng: &mut R, n: u32) -> (PRFSecretKey, PublicKey) {
         // PRF secret key:  sk = (k)
-        let k = rng.next_u32();
+        let k = rng.next_u32() % 10000;
 
         // sk : A secret key is n values x1, . . . , xn ∈ X,
         // 1. they can be random ones
@@ -114,7 +114,7 @@ impl<T: TranscriptHash> LamportSignatureFramework<T> {
 // A secure PRF defined over (K, {1, . . . , n}, X ).
 // xi ← F(k, i)
 fn F(k: u32, i: u32) -> u32 {
-    k.pow(i)
+    k * i
 }
 
 // 14.2.1 An explicit containment free function
@@ -123,6 +123,7 @@ fn F(k: u32, i: u32) -> u32 {
 //
 // input: m ∈ {0, 1}^v
 // output: Popt(m) ⊆ {1, . . . , n}
+// TODO: needs debug
 fn p_opt(m: &Vec<bool>) -> Vec<u32> {
     let v = m.len();
     let log2_v_plus_1 = ((v as f32).log2().ceil() as usize) + 1;
