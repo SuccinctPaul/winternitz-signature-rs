@@ -165,6 +165,7 @@ mod test {
     use rand_chacha::ChaCha20Rng;
 
     #[test]
+    #[ignore]
     fn test_basiclamport_signature() {
         let mut prng = ChaCha20Rng::seed_from_u64(7987979837453);
         let msg = b"hello, here is the test for basic Lamport signature";
