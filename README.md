@@ -1,7 +1,7 @@
 # winternitz-signature-rs
 
 
-Implement of chapter 14 in <<A Graduate Course in Applied Cryptography>>, including: 
+Implement of chapter 14 in <A Graduate Course in Applied Cryptography>, including: 
 * one bit lamport signature
 * basic lamport signature
 * lamport signature framework(draft)
